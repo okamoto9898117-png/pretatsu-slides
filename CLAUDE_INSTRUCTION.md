@@ -1,4 +1,4 @@
-# Claude プレゼンテーション自動生成 設計書
+# Claude プレゼンテーション自動生成 設計書 v2.0
 
 > このファイルはClaudeへの指示書です。フォームと一緒に貼り付けてください。
 
@@ -6,138 +6,307 @@
 
 ## Claudeへの指示
 
-以下のフォームデータを読み取り、この設計書に従って9枚のPPTXスライドを生成してください。
+フォームの内容を読み取り、この設計書に従ってPPTXスライドを生成してください。
 PptxGenJSのNode.jsスクリプトを `/tmp/pptx_build/` で実行して生成すること。
 出力先は `/Users/[ユーザー名]/My Campany/presentation_[会社名].pptx` とすること。
 
 ---
 
-## デザイン仕様（変更禁止・社内共通）
+## ステップ1：テーマからカラーパレットを決定する
 
-### カラーパレット
-| 変数名 | カラーコード | 用途 |
-|--------|------------|------|
-| NAVY | `1B2E4B` | 背景・ヘッダー |
-| GOLD | `D4AF37` | アクセント・強調 |
-| WHITE | `FFFFFF` | テキスト・カード背景 |
-| LIGHT | `F4F6F9` | スライド背景（明るいスライド） |
-| GRAY | `8A9BB0` | 本文・補足テキスト |
-| DARK | `0D1B2A` | 暗い背景 |
-| NAVY2 | `253D5E` | カードの背景 |
+フォームの「テーマ」に応じて、以下のカラーパレットを使用すること。
 
-### 基本ルール
-- スライドサイズ：`LAYOUT_16x9`（10" × 5.625"）
-- 全スライド右下にスライド番号（ゴールドの四角）
-- ヘッダーバー：全スライド上部（高さ1.1"）にNAVYの帯
-- ヘッダー左に番号（01〜09）、英語タグ、日本語タイトル
-- カードには必ず薄いドロップシャドウ
-- アイコンはreact-iconsをPNGに変換して使用
+### 🎨 プレミアム（高級感・重厚感）
+| 変数 | カラーコード | 用途 |
+|------|------------|------|
+| MAIN | `1B2E4B` | 背景・ヘッダー |
+| ACCENT | `D4AF37` | 強調・アイコン |
+| BG_DARK | `0D1B2A` | 暗い背景 |
+| BG_LIGHT | `F4F6F9` | 明るい背景 |
+| CARD_BG | `253D5E` | カード背景（暗いスライド） |
+| TEXT_LIGHT | `CADCFC` | サブテキスト（暗い背景上） |
+| TEXT_GRAY | `8A9BB0` | 補足テキスト |
+
+### 🚀 スタートアップ（革新的・スピード感）
+| 変数 | カラーコード | 用途 |
+|------|------------|------|
+| MAIN | `2D1B69` | 背景・ヘッダー |
+| ACCENT | `00D4FF` | 強調・アイコン |
+| BG_DARK | `1A0F3E` | 暗い背景 |
+| BG_LIGHT | `F0F4FF` | 明るい背景 |
+| CARD_BG | `3D2A8A` | カード背景 |
+| TEXT_LIGHT | `C8D8FF` | サブテキスト |
+| TEXT_GRAY | `8A9BB0` | 補足テキスト |
+
+### 💻 テクノロジー（先進的・スマート）
+| 変数 | カラーコード | 用途 |
+|------|------------|------|
+| MAIN | `0A0E1A` | 背景・ヘッダー |
+| ACCENT | `00B4A6` | 強調・アイコン |
+| BG_DARK | `050810` | 暗い背景 |
+| BG_LIGHT | `F0F5F5` | 明るい背景 |
+| CARD_BG | `0F1F2E` | カード背景 |
+| TEXT_LIGHT | `A0E4DF` | サブテキスト |
+| TEXT_GRAY | `7A9AAA` | 補足テキスト |
+
+### 🌿 信頼・誠実（安心感・堅実さ）
+| 変数 | カラーコード | 用途 |
+|------|------------|------|
+| MAIN | `1E4035` | 背景・ヘッダー |
+| ACCENT | `C8A84B` | 強調・アイコン |
+| BG_DARK | `0F2820` | 暗い背景 |
+| BG_LIGHT | `F5F7F0` | 明るい背景 |
+| CARD_BG | `2A5A48` | カード背景 |
+| TEXT_LIGHT | `C5DDD5` | サブテキスト |
+| TEXT_GRAY | `8AAA9A` | 補足テキスト |
+
+### 🔥 エネルギー・情熱（活力・熱量）
+| 変数 | カラーコード | 用途 |
+|------|------------|------|
+| MAIN | `1A2456` | 背景・ヘッダー |
+| ACCENT | `FF6B6B` | 強調・アイコン |
+| BG_DARK | `0D1535` | 暗い背景 |
+| BG_LIGHT | `FFF5F5` | 明るい背景 |
+| CARD_BG | `252F6E` | カード背景 |
+| TEXT_LIGHT | `FFD0D0` | サブテキスト |
+| TEXT_GRAY | `9AAABB` | 補足テキスト |
+
+### 🎨 カスタム
+フォームの「カスタムカラー設定」に記入された値をそのまま使用すること。
+- メインカラー → MAIN
+- アクセントカラー → ACCENT
+- 背景カラー → BG_LIGHT
+- テキストカラー → TEXT on bright slides
 
 ---
 
-## スライド構成（9枚）
+## ステップ2：トーンに応じた文章スタイルを決定する
+
+| トーン | 文章スタイル |
+|--------|------------|
+| フォーマル | 敬語・丁寧語を徹底。「〜です」「〜ます」「〜いたします」 |
+| セミフォーマル | 丁寧語ベース。やや読みやすく簡潔に。 |
+| カジュアル | 親しみやすい表現。「〜できます」「〜しよう」など。 |
+
+---
+
+## ステップ3：業界・ターゲットに応じたアイコン選択
+
+| 業界 | 推奨アイコン（react-icons/fa） |
+|------|------------------------------|
+| IT・SaaS | FaCode, FaServer, FaCloud, FaRocket |
+| 製造業 | FaCog, FaIndustry, FaTools, FaWrench |
+| 医療・ヘルスケア | FaHeartbeat, FaHospital, FaUserMd |
+| 教育 | FaBook, FaGraduationCap, FaChalkboardTeacher |
+| 飲食 | FaUtensils, FaStar, FaLeaf |
+| 不動産 | FaBuilding, FaHome, FaKey |
+| 汎用（指定なし） | FaLightbulb, FaRocket, FaShieldAlt |
+
+課題アイコン：FaExclamationTriangle, FaClock, FaChartLine（業界問わず共通）
+CTAアイコン：FaPhoneAlt, FaHandshake, FaCheckCircle（業界問わず共通）
+
+---
+
+## ステップ4：スライド枚数に応じた構成を決定する
+
+### 6枚（コンパクト版）
+01 表紙 → 02 課題 → 03 解決策 → 04 価値提案 → 05 料金 → 06 CTA
+
+### 9枚（標準版）
+01 表紙 → 02 課題 → 03 市場機会 → 04 解決策 → 05 価値提案 → 06 実績 → 07 プロセス → 08 料金 → 09 CTA
+
+### 12枚（詳細版）
+01 表紙 → 02 課題 → 03 市場機会 → 04 解決策 → 05 価値提案 → 06 実績 → 07 プロセス → 08 料金 → 09 会社概要 → 10 チーム紹介 → 11 FAQ → 12 CTA
+
+---
+
+## 共通デザインルール（全テーマ共通・変更禁止）
+
+### レイアウト
+- スライドサイズ：`LAYOUT_16x9`（10" × 5.625"）
+- 全スライド右下にスライド番号（ACCENTカラーの四角）
+- ヘッダーバー：全スライド上部（x:0, y:0, w:10, h:1.1）にMAINカラー
+- ヘッダー内：左に番号・英語タグ（ACCENTカラー）・日本語タイトル（WHITE）
+- 最小マージン：0.35"
+- カード間隔：0.2"
+- テキストボックス内余白：`margin: 0`（位置合わせのため）
+
+### タイポグラフィ
+| 要素 | サイズ | スタイル |
+|------|--------|---------|
+| スライドタイトル | 22〜36pt | 太字・WHITE |
+| カードタイトル | 13〜14pt | 太字・MAIN or WHITE |
+| 本文 | 10〜12pt | 通常・TEXT_GRAY |
+| 英語タグ | 8pt | 太字・ACCENT・文字間隔4 |
+| 数字KPI | 32〜34pt | 太字・ACCENT |
+
+### カード共通スタイル
+- 背景：WHITE（明るいスライド）/ CARD_BG（暗いスライド）
+- 上部アクセント線：高さ0.07"・ACCENTカラー
+- シャドウ：`{ type:"outer", color:"000000", blur:8, offset:3, angle:135, opacity:0.1 }`
+- 枠線なし（line: { color: WHITE }）
+
+### 暗いスライド（MAIN背景）
+- 表紙・市場機会・実績・CTA
+- テキストは WHITE / ACCENT / TEXT_GRAY を使用
+
+### 明るいスライド（BG_LIGHT背景）
+- 課題・解決策・プロセス
+- テキストは MAIN / TEXT_GRAY を使用
+
+### WHITE背景スライド
+- 価値提案・料金
+- テキストは MAIN / TEXT_GRAY を使用
+
+---
+
+## スライド別詳細仕様
 
 ### Slide 01｜表紙
-- 背景：NAVY
-- 左端に細いGOLDの縦線（幅0.12"）
-- 右上にNAVY2の大きな円（装飾）
-- 英語タグ「BUSINESS PROPOSAL」（GOLD・文字間隔6）
-- サービス名（36pt・太字・WHITE）
-- キャッチコピー（14pt・CADCFC）
-- 区切り線（GOLD）
-- 会社名・日付・担当者名（10pt・GRAY）
+```
+背景: MAIN
+左端縦線: x:0, y:0, w:0.12, h:5.625, ACCENT
+右上装飾円（大）: x:7.5, y:-1.2, w:3.5, h:3.5, CARD_BG
+右上装飾円（小）: x:8.2, y:-0.5, w:2.0, h:2.0, ACCENT transparency:80
+英語タグ: "BUSINESS PROPOSAL" x:0.5, y:1.0, 10pt, ACCENT, charSpacing:6
+サービス名: x:0.5, y:1.5, w:8.5, h:1.4, 36pt, 太字, WHITE
+キャッチコピー: x:0.5, y:3.05, w:7.5, h:1.0, 14pt, TEXT_LIGHT
+区切り線: x:0.5, y:4.2, w:2.5, h:0.04, ACCENT
+会社名・日付: x:0.5, y:4.38, 10pt, TEXT_GRAY
+```
 
-### Slide 02｜課題・背景
-- 背景：LIGHT
-- ヘッダー：NAVY、タグ「PROBLEM」、タイトル「あなたが直面している課題」
-- リード文（12pt・GRAY）
-- 3列カード：幅3.0"×高さ3.35"、白背景、上部にGOLDの細線
-  - カード上部：GOLDアイコン（FaExclamationTriangle / FaClock / FaChartLine）
-  - 課題タイトル（13pt・太字・NAVY）
-  - 課題説明（11pt・GRAY）
+### Slide 02｜課題
+```
+背景: BG_LIGHT
+ヘッダー: MAIN, タグ"PROBLEM"
+リード文: 12pt, TEXT_GRAY
+3列カード（x: 0.35 / 3.55 / 6.75, y:1.85, w:3.0, h:3.35）
+  上部ACCENT細線 h:0.08
+  GOLDアイコン（業界対応）: 0.5"×0.5"
+  課題タイトル: 13pt, 太字, MAIN
+  課題説明: 11pt, TEXT_GRAY
+```
 
-### Slide 03｜市場機会
-- 背景：NAVY
-- ヘッダー背景：DARK、タグ「MARKET OPPORTUNITY」
-- リード文（GRAY）
-- 3列ボックス（NAVY2背景、GOLD上線）：TAM / SAM / SOM
-  - ラベル（11pt・太字・GOLD）
-  - 数値（22pt・太字・WHITE）
-  - 説明（10pt・GRAY）
-- 下部にDARK帯＋GOLD左線＋補足テキスト（11pt・WHITE・italic）
+### Slide 03｜市場機会（9枚・12枚のみ）
+```
+背景: MAIN
+ヘッダー背景: BG_DARK, タグ"MARKET OPPORTUNITY"
+3列ボックス（CARD_BG背景、ACCENT上線）
+  ラベル: 11pt, ACCENT
+  数値: 22pt, WHITE
+  補足: 10pt, TEXT_GRAY
+下部帯: BG_DARK + ACCENT左線 + italic補足テキスト
+```
 
-### Slide 04｜解決策（強み）
-- 背景：LIGHT
-- ヘッダー：NAVY、タグ「SOLUTION」
-- 3列カード：白背景
-  - 中央にNAVYの円＋WHITE アイコン（FaLightbulb / FaRocket / FaShieldAlt）
-  - 右上にGOLDの小丸＋番号（1/2/3）
-  - 強みタイトル（13pt・太字・NAVY・中央揃え）
-  - 強み説明（10pt・GRAY）
+### Slide 04｜解決策
+```
+背景: BG_LIGHT
+ヘッダー: MAIN, タグ"SOLUTION"
+3列カード（白背景）
+  中央にMAINの円（1.2"）+ WHITEアイコン
+  右上にACCENTの小丸＋番号
+  タイトル: 13pt, 太字, MAIN, 中央揃え
+  説明: 10pt, TEXT_GRAY
+```
 
-### Slide 05｜価値提案（ビフォー/アフター）
-- 背景：WHITE
-- ヘッダー：NAVY、タグ「VALUE PROPOSITION」
-- 左パネル（BEFORE）：LIGHT背景、グレーヘッダー、❌テキスト5行
-- 中央：GOLDの右矢印アイコン
-- 右パネル（AFTER）：LIGHT背景、NAVYヘッダー（GOLD文字）、✅テキスト5行
-- AFTERパネルはGOLDの枠線
+### Slide 05｜価値提案
+```
+背景: WHITE
+ヘッダー: MAIN, タグ"VALUE PROPOSITION"
+左パネル（BEFORE）: x:0.3, y:1.25, w:4.1, h:4.1
+  ヘッダー: TEXT_GRAY背景, WHITE文字
+  5行 ❌テキスト: 11pt, MAIN
+中央矢印: ACCENTアイコン（FaArrowRight）
+右パネル（AFTER）: x:5.6, y:1.25, w:4.1, h:4.1
+  ヘッダー: MAIN背景, ACCENT文字
+  枠線: ACCENT width:2
+  5行 ✅テキスト: 11pt, MAIN
+```
 
-### Slide 06｜実績・信頼性
-- 背景：NAVY
-- ヘッダー背景：DARK、タグ「TRACK RECORD」
-- 4列KPIボックス（NAVY2背景、GOLD上線）：
-  - 数値（32pt・太字・GOLD）
-  - ラベル（12pt・太字・WHITE）
-  - 補足（9pt・GRAY）
-- 下部にDARK帯「導入企業ロゴ配置エリア」
+### Slide 06｜実績（9枚・12枚のみ）
+```
+背景: MAIN
+ヘッダー: BG_DARK, タグ"TRACK RECORD"
+4列KPIボックス（CARD_BG背景、ACCENT上線）
+  数値: 32pt, ACCENT
+  ラベル: 12pt, WHITE
+  補足: 9pt, TEXT_GRAY
+下部: BG_DARK帯「導入企業ロゴ配置エリア」
+```
 
-### Slide 07｜導入プロセス
-- 背景：LIGHT
-- ヘッダー：NAVY、タグ「PROCESS」
-- 3列カード：白背景
-  - 上部にGOLDの円＋番号（01/02/03）
-  - ステップタイトル（13pt・太字・NAVY）
-  - NAVYの期間バッジ（GOLD文字）
-  - 内容リスト4項目（▸マーク・10pt・GRAY）
-- 3カードをまたぐGOLDの横線（接続線）
+### Slide 07｜プロセス（9枚・12枚のみ）
+```
+背景: BG_LIGHT
+ヘッダー: MAIN, タグ"PROCESS"
+接続線: y:2.85, ACCENT transparency:60
+3列カード（白背景）
+  上部ACCENTの円＋番号
+  タイトル: 13pt, MAIN
+  期間バッジ: MAIN背景, ACCENT文字
+  内容4項目: ▸マーク, 10pt, TEXT_GRAY
+```
 
-### Slide 08｜料金・プラン
-- 背景：WHITE
-- ヘッダー：NAVY、タグ「PRICING」
-- 3列プランカード：
-  - BASIC：LIGHT背景、グレー枠
-  - STANDARD：NAVY背景、GOLD枠、上部に「人気No.1」バッジ
-  - ENTERPRISE：LIGHT背景、グレー枠
-  - プラン名（13pt・太字）、価格（20pt・太字）、特徴5項目（✓マーク）
+### Slide 08｜料金
+```
+背景: WHITE
+ヘッダー: MAIN, タグ"PRICING"
+3列プランカード
+  BASIC: BG_LIGHT背景, グレー枠
+  STANDARD: MAIN背景, ACCENT枠, 「人気No.1」バッジ
+  ENTERPRISE: BG_LIGHT背景, グレー枠
+  プラン名: 13pt, ACCENT(人気) or MAIN
+  価格: 20pt, 太字
+  特徴5項目: ✓マーク, 10pt
+```
 
-### Slide 09｜クロージング（CTA）
-- 背景：NAVY
-- ヘッダー背景：DARK、タグ「NEXT STEP」
-- 左下・右上に装飾円（NAVY2・DARK）
-- メインメッセージ（24pt・太字・WHITE・中央）
-- GOLD区切り線
-- 3つのCTAアイコン（FaPhoneAlt / FaHandshake / FaCheckCircle・GOLD）
-  - タイトル（14pt・太字・GOLD）
-  - 説明（10pt・GRAY）
-- 下部にDARK帯＋GOLD左線＋連絡先（TEL / EMAIL / WEB）
+### Slide 09（または最終）｜CTA
+```
+背景: MAIN
+ヘッダー: BG_DARK, タグ"NEXT STEP"
+左下・右上装飾円
+メインメッセージ: 24pt, 太字, WHITE, 中央
+ACCENT区切り線
+3つのCTA（アイコン＋タイトル＋説明）
+  タイトル: 14pt, ACCENT
+  説明: 10pt, TEXT_GRAY
+下部連絡先帯: BG_DARK + ACCENT左線 + WHITE文字
+```
+
+### Slide 10｜会社概要（12枚のみ）
+```
+背景: BG_LIGHT
+ヘッダー: MAIN, タグ"ABOUT US"
+左半分: 会社情報（設立年・従業員数・所在地・事業内容）
+右半分: ミッション・ビジョンの大きなテキスト
+```
+
+### Slide 11｜FAQ（12枚のみ）
+```
+背景: WHITE
+ヘッダー: MAIN, タグ"FAQ"
+よくある質問3〜4項目
+  Qマーク（ACCENT）+ 質問文
+  Aマーク（MAIN）+ 回答文
+```
 
 ---
 
-## フォームデータの対応表
+## フォームデータ対応表
 
 | フォーム項目 | 使用スライド |
 |------------|------------|
-| 会社名 | 01表紙・09CTA |
-| サービス名 | 01表紙タイトル |
-| キャッチコピー | 01表紙サブタイトル |
-| 担当者名・日付 | 01表紙下部 |
+| テーマ | 全スライドのカラーパレット |
+| トーン | 全スライドの文章スタイル |
+| ターゲット・業界 | アイコン選択・コピーライティング |
+| 強調メッセージ | 表紙キャッチ・CTAメッセージに反映 |
+| スライド枚数 | 生成スライド数の決定 |
+| 会社名・サービス名 | 01表紙・09CTA |
 | 課題1〜3 | 02課題カード |
-| 市場規模TAM/SAM/SOM | 03市場機会 |
+| 市場TAM/SAM/SOM | 03市場機会 |
 | 強み1〜3 | 04解決策カード |
 | ビフォー5項目 | 05左パネル |
 | アフター5項目 | 05右パネル |
-| 実績KPI×4 | 06実績ボックス |
-| ステップ1〜3 | 07プロセスカード |
-| プラン1〜3 | 08料金カード |
-| TEL/EMAIL/WEB | 09連絡先 |
+| 実績KPI×4 | 06実績 |
+| ステップ1〜3 | 07プロセス |
+| プラン1〜3 | 08料金 |
+| TEL/EMAIL/WEB | 最終スライド連絡先 |
