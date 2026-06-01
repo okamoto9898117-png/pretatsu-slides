@@ -74,7 +74,7 @@ GitHubから以下の2つをダウンロード：
 ## 📚 参考にしている一流スライド
 
 ### 同業他社・類似業界（Google Drive）
-👉 https://drive.google.com/drive/folders/13g9u2S7afz2AWomBDae6dXe2yVciGUjK
+👉 https://drive.google.com/drive/folders/1xCA9C0WycprAjWyaHB1fhqXFdOM14Wyv
 
 SmartHR・Schoo・MICIN・カラキャス・KADOKAWA・星野リゾートなど
 **50本以上のプロ品質資料**をClaudeが自動参照しています。
