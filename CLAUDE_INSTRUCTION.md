@@ -8,7 +8,7 @@
 
 ### ① 社内参考資料フォルダ（Google Drive）
 50本以上のプロ品質プレゼン資料。スライド生成時に参照すること。
-**URL：** https://drive.google.com/drive/folders/14leu7CDxPxE5QXTNl-IsqCO253ivZB3c
+**URL：** https://drive.google.com/drive/folders/13g9u2S7afz2AWomBDae6dXe2yVciGUjK
 
 | 資料名 | 参考にする点 |
 |--------|------------|
