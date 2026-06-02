@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>プレゼン自動生成ツール｜pretatsu-slides</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+      background: #0d1117;
+      color: #e6edf3;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+    .container { max-width: 860px; margin: 0 auto; }
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #ffffff;
+    }
+    .subtitle {
+      color: #8b949e;
+      font-size: 15px;
+      margin-bottom: 40px;
+    }
+    .step {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      padding: 28px;
+      margin-bottom: 24px;
+    }
+    .step-label {
+      display: inline-block;
+      background: #1f6feb;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+      letter-spacing: 0.05em;
+    }
+    .step h2 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #e6edf3;
+    }
+    .step p {
+      color: #8b949e;
+      font-size: 14px;
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .code-block {
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      padding: 16px;
+      font-family: 'SFMono-Regular', Consolas, monospace;
+      font-size: 13px;
+      color: #e6edf3;
+      white-space: pre-wrap;
+      word-break: break-word;
+      line-height: 1.6;
+      max-height: 320px;
+      overflow-y: auto;
+      position: relative;
+    }
+    .copy-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 12px;
+      background: #21262d;
+      border: 1px solid #30363d;
+      color: #e6edf3;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.15s;
+      font-family: inherit;
+    }
+    .copy-btn:hover { background: #30363d; }
+    .copy-btn.copied { background: #1a7f37; border-color: #1a7f37; }
+    .arrow {
+      text-align: center;
+      font-size: 24px;
+      color: #30363d;
+      margin: 8px 0;
+    }
+    .template-box {
+      background: #0d1117;
+      border: 1px solid #1f6feb;
+      border-radius: 8px;
+      padding: 16px;
+      font-size: 13px;
+      color: #e6edf3;
+      white-space: pre-wrap;
+      line-height: 1.7;
+      font-family: 'SFMono-Regular', Consolas, monospace;
+    }
+    .badge {
+      display: inline-block;
+      background: #1a7f37;
+      color: #fff;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    .links { display: flex; gap: 12px; margin-top: 12px; flex-wrap: wrap; }
+    .link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #21262d;
+      border: 1px solid #30363d;
+      color: #58a6ff;
+      padding: 7px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .link-btn:hover { background: #30363d; }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <h1>📊 プレゼン自動生成ツール</h1>
+  <p class="subtitle">フォームに記入してClaudeに貼るだけ。誰でも世界水準のスライドが完成します。</p>
+
+  <!-- STEP 1 -->
+  <div class="step">
+    <span class="step-label">STEP 1</span>
+    <h2>設計書をコピーする</h2>
+    <p>下のボタンを押してコピーし、Claudeに貼り付けます。<strong>変更不要</strong>です。</p>
+    <div id="instruction-content" class="code-block">読み込み中...</div>
+    <button class="copy-btn" onclick="copyContent('instruction-content', this)">
+      📋 設計書をコピー
+    </button>
+  </div>
+
+  <div class="arrow">↓</div>
+
+  <!-- STEP 2 -->
+  <div class="step">
+    <span class="step-label">STEP 2</span>
+    <h2>フォームの〇〇を書き換えてコピーする <span class="badge">ここだけ記入</span></h2>
+    <p>〇〇の部分をあなたの内容に書き換えてからコピーしてください。</p>
+    <div id="form-content" class="code-block">読み込み中...</div>
+    <button class="copy-btn" onclick="copyContent('form-content', this)">
+      📋 フォームをコピー
+    </button>
+  </div>
+
+  <div class="arrow">↓</div>
+
+  <!-- STEP 3 -->
+  <div class="step">
+    <span class="step-label">STEP 3</span>
+    <h2>Claudeに貼り付けて送る</h2>
+    <p>以下のテンプレートの形式で、STEP1・STEP2の内容を貼り付けて送信してください。</p>
+    <div class="template-box">【設計書】
+（STEP1でコピーした内容を貼り付け）
+
+【フォーム】
+（STEP2でコピーした内容を貼り付け）
+
+上記をもとにプレゼンテーションを自動生成してください。</div>
+    <button class="copy-btn" onclick="copyTemplate(this)">
+      📋 テンプレートをコピー
+    </button>
+  </div>
+
+  <div class="arrow">↓</div>
+
+  <!-- STEP 4 -->
+  <div class="step">
+    <span class="step-label">STEP 4</span>
+    <h2>PPTXファイルが自動生成されます ✅</h2>
+    <p>Claudeが自動でスライドを生成・保存します。完成までの目安：<strong>2〜3分</strong></p>
+    <div class="links">
+      <a class="link-btn" href="https://claude.ai" target="_blank">🤖 Claudeを開く</a>
+      <a class="link-btn" href="https://github.com/okamoto9898117-png/pretatsu-slides/issues" target="_blank">💡 改善提案はこちら（Issues）</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const REPO = 'okamoto9898117-png/pretatsu-slides';
+  const FILES = {
+    'instruction-content': '1-2_Claudeに渡す設計書.md',
+    'form-content': '2-2_Claudeに渡すフォーム(〇〇を書換え).txt'
+  };
+
+  async function loadFile(elementId, filename) {
+    try {
+      const encoded = encodeURIComponent(filename);
+      const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${encoded}`);
+      const data = await res.json();
+      const text = atob(data.content.replace(/\n/g, ''));
+      const decoded = new TextDecoder('utf-8').decode(
+        Uint8Array.from(text, c => c.charCodeAt(0))
+      );
+      document.getElementById(elementId).textContent = decoded;
+    } catch (e) {
+      document.getElementById(elementId).textContent = '読み込みエラー。ページを再読み込みしてください。';
+    }
+  }
+
+  function copyContent(elementId, btn) {
+    const text = document.getElementById(elementId).textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = '✅ コピーしました！';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = btn.textContent.includes('設計書') ? '📋 設計書をコピー' : '📋 フォームをコピー';
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  }
+
+  function copyTemplate(btn) {
+    const template = `【設計書】\n（STEP1でコピーした内容を貼り付け）\n\n【フォーム】\n（STEP2でコピーした内容を貼り付け）\n\n上記をもとにプレゼンテーションを自動生成してください。`;
+    navigator.clipboard.writeText(template).then(() => {
+      btn.textContent = '✅ コピーしました！';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = '📋 テンプレートをコピー'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  Object.entries(FILES).forEach(([id, filename]) => loadFile(id, filename));
+</script>
+</body>
+</html>
